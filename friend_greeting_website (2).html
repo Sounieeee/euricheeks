@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hey Christel 🌷</title>
+  <style>
+    :root{--bg:#fff7fb;--card:#ffffff;--accent:#ff6b9a;--muted:#555}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fef1f6 0%,#f7fbff 100%);padding:24px}
+    .card{width:100%;max-width:760px;background:var(--card);border-radius:20px;box-shadow:0 10px 30px rgba(18,24,40,0.08);padding:28px;position:relative;overflow:hidden}
+    header{display:flex;align-items:center;gap:16px}
+    .avatar{width:78px;height:78px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#ff9fb0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:28px;box-shadow:0 6px 18px rgba(255,107,154,0.15)}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 20px;color:var(--muted)}
+
+    .heart{position:absolute;right:22px;top:22px;font-size:26px;color:var(--accent);opacity:.9}
+
+    .content{display:grid;grid-template-columns:1fr 320px;gap:20px}
+    .note{background:linear-gradient(180deg,#fff 0%,#fffafc 100%);padding:18px;border-radius:12px;border:1px solid #fff0f3}
+    blockquote{margin:0;padding:0;font-size:16px;color:#333}
+
+    .actions{display:flex;flex-direction:column;gap:12px}
+    button.primary{background:var(--accent);color:#fff;border:0;padding:12px 14px;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 8px 20px rgba(255,107,154,0.12)}
+    button.ghost{background:transparent;border:1px solid #ffd3e2;padding:10px 12px;border-radius:10px;cursor:pointer}
+
+    .small{font-size:13px;color:#666}
+    .revealed{margin-top:12px;padding:12px;border-radius:10px;background:#fff0f6;border:1px dashed #ffccd9}
+
+    footer{margin-top:16px;font-size:12px;color:#777}
+
+    @media(max-width:760px){.content{grid-template-columns:1fr;}.avatar{width:64px;height:64px;font-size:22px}}
+
+    .confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;opacity:0;pointer-events:none}
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="heart">💌</div>
+    <header>
+      <div class="avatar" id="avatar">C</div>
+      <div>
+        <h1>Hey Christel 🌷</h1>
+        <p class="lead">I made this small page just for you — I’d really like to be friends and get to know you more. No pressure, just something from me to say hi in a cute way. 💖</p>
+      </div>
+    </header>
+
+    <div class="content" style="margin-top:18px">
+      <div class="note">
+        <blockquote id="messageLine">If you’d like, click the button below to see a short little note I wrote for you.</blockquote>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="revealBtn">Show the note ✨</button>
+        <button class="ghost" id="replyBtn">Reply to me 💬</button>
+        <div class="small">(You can open this link anytime — it’s yours!)</div>
+      </div>
+    </div>
+
+    <div id="revealedArea" style="display:none" class="revealed">
+      <strong>Hi Christel 💐</strong>
+      <div id="personalNote" style="margin-top:8px">
+        You seem like such a lovely and interesting person — I’d really like to know your stories, what makes you smile, or your favorite coffee. Maybe we can start with a simple chat sometime? 🌸
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="primary" id="okBtn">Sure, that’d be nice 💕</button>
+        <button class="ghost" id="noBtn">Maybe later 🌙</button>
+      </div>
+    </div>
+
+    <footer>
+      <div id="result" style="min-height:20px"></div>
+    </footer>
+  </div>
+
+  <!-- Background music (royalty-free) -->
+  <audio id="bgMusic" src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_f4a848b75d.mp3?filename=smooth-jazz-124231.mp3" loop autoplay muted></audio>
+
+  <script>
+    const revealBtn = document.getElementById('revealBtn');
+    const revealedArea = document.getElementById('revealedArea');
+    const result = document.getElementById('result');
+    const okBtn = document.getElementById('okBtn');
+    const noBtn = document.getElementById('noBtn');
+    const replyBtn = document.getElementById('replyBtn');
+    const bg = document.getElementById('bgMusic');
+
+    function simpleConfetti() {
+      const colors = ['#ff6b9a','#ffd3e2','#fff1f3','#fbe7f1'];
+      for(let i=0;i<25;i++){
+        const el = document.createElement('div');
+        el.className='confetti-piece';
+        el.style.left = Math.random()*100 + '%';
+        el.style.top = Math.random()*40 + '%';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.transform = 'translateY(0) rotate('+Math.random()*360+'deg)';
+        el.style.opacity = 1;
+        document.body.appendChild(el);
+        (function(a){
+          setTimeout(()=>{
+            a.style.transition='transform 1200ms ease-in,opacity 1200ms';
+            a.style.transform = 'translateY(400px) rotate('+ (Math.random()*720) +'deg)';
+            a.style.opacity = 0;
+            setTimeout(()=>a.remove(),1400);
+          }, 80*i);
+        })(el)
+      }
+    }
+
+    revealBtn.addEventListener('click', ()=>{
+      revealedArea.style.display='block';
+      simpleConfetti();
+      bg.muted = false; // unmute the music when the note is revealed
+      revealBtn.disabled=true; revealBtn.textContent='Sent ✨';
+    });
+
+    okBtn.addEventListener('click', ()=>{
+      result.textContent = "Yay — thank you Christel! I’ll message you soon :)";
+      simpleConfetti();
+    });
+    noBtn.addEventListener('click', ()=>{
+      result.textContent = "No worries Christel — thanks for checking this out 💗";
+    });
+
+    replyBtn.addEventListener('click', ()=>{
+      const reply = prompt('Type a short reply to send (or Cancel):');
+      if(reply && reply.trim().length){
+        result.textContent = 'Your reply was noted: "' + reply.trim().slice(0,120) + '"';
+      } else if(reply!==null){
+        result.textContent = 'You sent an empty reply.';
+      }
+    });
+
+    const avatar = document.getElementById('avatar');
+    avatar.addEventListener('click', ()=>{
+      const name = prompt('Add initials or nickname:', avatar.textContent);
+      if(name!==null) avatar.textContent = name.slice(0,6);
+    });
+
+    revealBtn.addEventListener('keyup', (e)=>{ if(e.key==='Enter') revealBtn.click(); });
+  </script>
+</body>
+</html>
