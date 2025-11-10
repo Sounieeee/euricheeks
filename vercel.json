@@ -1,0 +1,4 @@
+{
+  "builds": [{ "src": "friend_greeting_website (2).html", "use": "@vercel/static" }],
+  "routes": [{ "src": "/(.*)", "dest": "/friend_greeting_website (2).html" }]
+}
